@@ -1,39 +1,41 @@
 import { Badge } from "@/components/ui/badge";
 
-export function getAppointmentStatusBadge(status: string) {
-  const map: Record<string, { label: string; variant: any }> = {
-    REQUESTED: { label: "Requested", variant: "info" },
-    CONFIRMED: { label: "Confirmed", variant: "gold" },
-    IN_PROGRESS: { label: "In Progress", variant: "warning" },
-    COMPLETED: { label: "Completed", variant: "success" },
-    CANCELLED: { label: "Cancelled", variant: "destructive" },
-    NO_SHOW: { label: "No Show", variant: "secondary" },
+export function AppointmentStatusBadge({ status }: { status: string }) {
+  const map: Record<string, { variant: any; label: string }> = {
+    REQUESTED:  { variant: "info",    label: "Requested" },
+    CONFIRMED:  { variant: "success", label: "Confirmed" },
+    IN_PROGRESS:{ variant: "warning", label: "In Progress" },
+    COMPLETED:  { variant: "default", label: "Completed" },
+    CANCELLED:  { variant: "danger",  label: "Cancelled" },
+    NO_SHOW:    { variant: "danger",  label: "No Show" },
   };
-  const s = map[status] || { label: status, variant: "secondary" };
-  return <Badge variant={s.variant}>{s.label}</Badge>;
+  const cfg = map[status] ?? { variant: "default", label: status };
+  return <Badge variant={cfg.variant}>{cfg.label}</Badge>;
 }
 
-export function getQuoteStatusBadge(status: string) {
-  const map: Record<string, { label: string; variant: any }> = {
-    DRAFT: { label: "Draft", variant: "secondary" },
-    SENT: { label: "Sent", variant: "info" },
-    ACCEPTED: { label: "Accepted", variant: "success" },
-    DECLINED: { label: "Declined", variant: "destructive" },
-    EXPIRED: { label: "Expired", variant: "secondary" },
+export function QuoteStatusBadge({ status }: { status: string }) {
+  const map: Record<string, { variant: any; label: string }> = {
+    DRAFT:     { variant: "default", label: "Draft" },
+    SENT:      { variant: "info",    label: "Sent" },
+    ACCEPTED:  { variant: "success", label: "Accepted" },
+    REJECTED:  { variant: "danger",  label: "Rejected" },
+    EXPIRED:   { variant: "warning", label: "Expired" },
+    CONVERTED: { variant: "gold",    label: "Converted" },
   };
-  const s = map[status] || { label: status, variant: "secondary" };
-  return <Badge variant={s.variant}>{s.label}</Badge>;
+  const cfg = map[status] ?? { variant: "default", label: status };
+  return <Badge variant={cfg.variant}>{cfg.label}</Badge>;
 }
 
-export function getInvoiceStatusBadge(status: string) {
-  const map: Record<string, { label: string; variant: any }> = {
-    DRAFT: { label: "Draft", variant: "secondary" },
-    SENT: { label: "Sent", variant: "info" },
-    PAID: { label: "Paid", variant: "success" },
-    PARTIALLY_PAID: { label: "Partial", variant: "warning" },
-    OVERDUE: { label: "Overdue", variant: "destructive" },
-    CANCELLED: { label: "Cancelled", variant: "secondary" },
+export function InvoiceStatusBadge({ status }: { status: string }) {
+  const map: Record<string, { variant: any; label: string }> = {
+    DRAFT:          { variant: "default", label: "Draft" },
+    SENT:           { variant: "info",    label: "Sent" },
+    PAID:           { variant: "success", label: "Paid" },
+    PARTIALLY_PAID: { variant: "warning", label: "Partial" },
+    OVERDUE:        { variant: "danger",  label: "Overdue" },
+    CANCELLED:      { variant: "danger",  label: "Cancelled" },
+    REFUNDED:       { variant: "outline", label: "Refunded" },
   };
-  const s = map[status] || { label: status, variant: "secondary" };
-  return <Badge variant={s.variant}>{s.label}</Badge>;
+  const cfg = map[status] ?? { variant: "default", label: status };
+  return <Badge variant={cfg.variant}>{cfg.label}</Badge>;
 }

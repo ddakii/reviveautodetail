@@ -2,10 +2,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Logo } from "@/components/website/logo";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ArrowRight } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,11 +16,7 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const res = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    const res = await signIn("credentials", { email, password, redirect: false });
     setLoading(false);
     if (res?.ok) {
       router.push("/dashboard");
@@ -33,102 +26,113 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0B0C] flex">
-      {/* Left brand */}
-      <div className="hidden lg:flex lg:w-1/2 bg-[#0D0D0F] border-r border-white/5 flex-col justify-between p-12 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=1200&q=80"
-            alt="Revive Auto Detail"
-            className="w-full h-full object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-[#0D0D0F]/60" />
+    <div style={{ minHeight: "100vh", background: "#090909", display: "flex" }}>
+      {/* Left — brand panel */}
+      <div style={{ display: "none", width: "50%", background: "#0D0D0B", borderRight: "1px solid rgba(255,255,255,0.06)", flexDirection: "column", justifyContent: "space-between", padding: 56, position: "relative", overflow: "hidden" }}
+        className="auth-panel">
+        <img src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=1200&q=80" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(9,9,9,0.2), rgba(9,9,9,0.8))" }} />
+
+        {/* Logo */}
+        <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ width: 30, height: 30, borderRadius: 8, background: "var(--c-gold)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13, color: "#fff" }}>R</div>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#fff", letterSpacing: "0.08em" }}>REVIVE</div>
+            <div style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: "0.2em" }}>AUTO DETAIL</div>
+          </div>
         </div>
-        <div className="relative">
-          <Logo variant="light" size="md" href="/" />
-        </div>
-        <div className="relative">
-          <div className="h-px w-12 bg-[#C9A86A] mb-6" />
-          <h2 className="text-3xl font-bold text-white leading-tight mb-4">
+
+        {/* Tagline */}
+        <div style={{ position: "relative" }}>
+          <div style={{ width: 40, height: 2, background: "var(--c-gold)", marginBottom: 24, opacity: 0.7 }} />
+          <h2 style={{ fontSize: "clamp(22px, 2.5vw, 32px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: 16, letterSpacing: "-0.02em" }}>
             Your complete<br />detailing management<br />
-            <span className="text-[#C9A86A] font-['Playfair_Display'] italic font-normal">platform.</span>
+            <span style={{ color: "var(--c-gold)", fontWeight: 400, fontStyle: "italic" }}>platform.</span>
           </h2>
-          <p className="text-white/40 text-sm">
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.35)", lineHeight: 1.7 }}>
             Manage customers, vehicles, appointments, quotes, and invoices — all in one place.
           </p>
         </div>
       </div>
 
-      {/* Right login */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-sm">
-          <div className="lg:hidden mb-8">
-            <Logo variant="light" size="md" href="/" />
+      {/* Right — login form */}
+      <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 24px" }}>
+        <div style={{ width: "100%", maxWidth: 380 }}>
+          {/* Mobile logo */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 40 }} className="auth-mobile-logo">
+            <div style={{ width: 28, height: 28, borderRadius: 7, background: "var(--c-gold)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 11, color: "#fff" }}>R</div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#fff", letterSpacing: "0.08em" }}>REVIVE AUTO DETAIL</div>
           </div>
 
-          <h1 className="text-2xl font-bold text-white mb-2">Sign in</h1>
-          <p className="text-white/40 text-sm mb-8">Access your Revive dashboard</p>
+          <h1 style={{ fontSize: 26, fontWeight: 700, color: "#fff", marginBottom: 6, letterSpacing: "-0.02em" }}>Sign in</h1>
+          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.35)", marginBottom: 32 }}>Access your Revive dashboard</p>
 
-          <form onSubmit={submit} className="space-y-4">
+          <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {error && (
-              <div className="bg-red-900/30 border border-red-500/30 text-red-400 px-4 py-3 text-sm">
+              <div style={{ background: "rgba(220,38,38,0.12)", border: "1px solid rgba(220,38,38,0.25)", borderRadius: "var(--r-md)", padding: "12px 14px", fontSize: 13, color: "#f87171" }}>
                 {error}
               </div>
             )}
 
-            <div>
-              <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-1.5">Email</label>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <label style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em", textTransform: "uppercase" }}>Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                className="w-full h-11 px-4 bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-[#C9A86A] transition-colors text-sm"
                 placeholder="admin@reviveautodetail.com"
                 required
+                style={{ height: 44, padding: "0 14px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "var(--r-md)", color: "#fff", fontSize: 14, fontFamily: "inherit", outline: "none", transition: "border-color 0.15s" }}
+                onFocus={e => (e.currentTarget.style.borderColor = "var(--c-gold)")}
+                onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")}
               />
             </div>
 
-            <div>
-              <label className="block text-xs font-medium text-white/40 uppercase tracking-wider mb-1.5">Password</label>
-              <div className="relative">
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <label style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em", textTransform: "uppercase" }}>Password</label>
+              <div style={{ position: "relative" }}>
                 <input
                   type={showPw ? "text" : "password"}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  className="w-full h-11 px-4 pr-10 bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-[#C9A86A] transition-colors text-sm"
                   placeholder="••••••••"
                   required
+                  style={{ width: "100%", height: 44, padding: "0 40px 0 14px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "var(--r-md)", color: "#fff", fontSize: 14, fontFamily: "inherit", outline: "none", transition: "border-color 0.15s" }}
+                  onFocus={e => (e.currentTarget.style.borderColor = "var(--c-gold)")}
+                  onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")}
                 />
-                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60">
-                  {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                <button type="button" onClick={() => setShowPw(!showPw)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.3)", padding: 0, display: "flex", alignItems: "center" }}>
+                  {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full h-11 bg-[#C9A86A] text-[#0B0B0C] font-semibold text-sm hover:bg-[#b8964f] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-            >
+            <button type="submit" disabled={loading} style={{ width: "100%", height: 46, background: loading ? "rgba(184,155,99,0.5)" : "var(--c-gold)", color: "#fff", border: "none", borderRadius: "var(--r-md)", fontWeight: 700, fontSize: 14, cursor: loading ? "not-allowed" : "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 4, transition: "background 0.15s" }}>
               {loading ? (
                 <>
-                  <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                  </svg>
-                  Signing in...
+                  <span style={{ width: 14, height: 14, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "#fff", borderRadius: "50%", display: "inline-block", animation: "spin 0.7s linear infinite" }} />
+                  Signing in…
                 </>
-              ) : "Sign In"}
+              ) : (
+                <>Sign In <ArrowRight size={15} /></>
+              )}
             </button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-white/10">
-            <p className="text-white/20 text-xs text-center">
-              Demo credentials: admin@revive.com / Revive2026!
+          <div style={{ marginTop: 24, paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.07)", textAlign: "center" }}>
+            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.2)" }}>
+              Demo: admin@revive.com / Revive2026!
             </p>
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (min-width: 1024px) {
+          .auth-panel { display: flex !important; }
+          .auth-mobile-logo { display: none !important; }
+        }
+      `}</style>
     </div>
   );
 }

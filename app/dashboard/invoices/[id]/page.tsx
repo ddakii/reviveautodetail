@@ -6,7 +6,7 @@ import { ArrowLeft, Download, Printer, Send, CheckCircle, DollarSign } from "luc
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { getInvoiceStatusBadge } from "@/lib/status";
+import { InvoiceStatusBadge } from "@/lib/status";
 import { InvoicePreview } from "@/components/invoices/invoice-preview";
 import { RecordPaymentDialog } from "@/components/dashboard/record-payment-dialog";
 
@@ -50,43 +50,41 @@ export default function InvoiceDetailPage() {
     pdf.save(`${invoice.number}.pdf`);
   };
 
-  if (loading) return <div className="p-8 text-[#707070]">Loading...</div>;
-  if (!invoice || invoice.error) return <div className="p-8 text-red-500">Invoice not found.</div>;
+  if (loading) return <div style={{ padding: 32 }}><div className="skeleton" style={{ height: 20, width: "40%" }} /></div>;
+  if (!invoice || invoice.error) return <div style={{ padding: 48, textAlign: "center", color: "var(--c-text-3)" }}>Invoice not found.</div>;
 
   return (
-    <div className="p-6 lg:p-8">
-      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-        <div className="flex items-center gap-3">
-          <Link href="/dashboard/invoices" className="p-2 hover:bg-[#f5f5f3] rounded-sm transition-colors">
-            <ArrowLeft className="h-5 w-5 text-[#707070]" />
+    <div style={{ padding: 32 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginBottom: 24 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <Link href="/dashboard/invoices" style={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "var(--r-sm)", border: "1px solid var(--c-border)", textDecoration: "none", color: "var(--c-text-3)" }}>
+            <ArrowLeft size={14} />
           </Link>
           <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-xl font-bold text-[#111111]">{invoice.number}</h1>
-              {getInvoiceStatusBadge(invoice.status)}
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <h1 style={{ fontSize: 18, fontWeight: 700, color: "var(--c-ink)" }}>{invoice.invoiceNumber}</h1>
+              <InvoiceStatusBadge status={invoice.status} />
             </div>
-            <p className="text-[#707070] text-sm mt-0.5">
-              {invoice.customer?.firstName} {invoice.customer?.lastName}
-            </p>
+            <p style={{ fontSize: 13, color: "var(--c-text-3)", marginTop: 2 }}>{invoice.customer?.firstName} {invoice.customer?.lastName}</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 print:hidden">
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           {invoice.status !== "PAID" && invoice.status !== "CANCELLED" && (
             <Button variant="gold" size="sm" onClick={() => setPaymentDialog(true)}>
-              <DollarSign className="h-4 w-4" /> Record Payment
+              <DollarSign size={13} /> Record Payment
             </Button>
           )}
           {invoice.status === "DRAFT" && (
-            <Button variant="outline" size="sm" onClick={() => markStatus("SENT")}>
-              <Send className="h-4 w-4" /> Mark as Sent
+            <Button variant="secondary" size="sm" onClick={() => markStatus("SENT")}>
+              <Send size={13} /> Mark Sent
             </Button>
           )}
-          <Button variant="outline" size="sm" onClick={printInvoice}>
-            <Printer className="h-4 w-4" /> Print
+          <Button variant="secondary" size="sm" onClick={printInvoice}>
+            <Printer size={13} /> Print
           </Button>
-          <Button variant="default" size="sm" onClick={downloadPDF}>
-            <Download className="h-4 w-4" /> Download PDF
+          <Button variant="primary" size="sm" onClick={downloadPDF}>
+            <Download size={13} /> Download PDF
           </Button>
         </div>
       </div>

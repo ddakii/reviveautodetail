@@ -1,77 +1,86 @@
 "use client";
 import { useState, useEffect } from "react";
-import { BookOpen, Check, X, UserPlus } from "lucide-react";
+import { BookOpen, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { PageHeader } from "@/components/ui/page-header";
+import { EmptyState } from "@/components/ui/empty-state";
 import { formatDate } from "@/lib/utils";
 
 export default function BookingsPage() {
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch("/api/bookings").then(r => r.json()).then(d => { setBookings(d || []); setLoading(false); });
-  }, []);
-
-  const updateStatus = async (id: string, status: string) => {
-    await fetch(`/api/bookings/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status }),
-    });
-    setBookings(b => b.map(x => x.id === id ? { ...x, status } : x));
+  const load = async () => {
+    setLoading(true);
+    const r = await fetch("/api/bookings").catch(() => null);
+    if (r?.ok) { const d = await r.json(); setBookings(Array.isArray(d) ? d : []); }
+    setLoading(false);
   };
 
-  return (
-    <div className="p-6 lg:p-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[#111111]">Booking Requests</h1>
-        <p className="text-[#707070] text-sm mt-0.5">
-          {bookings.filter(b => b.status === "PENDING").length} pending · {bookings.length} total
-        </p>
-      </div>
+  useEffect(() => { load(); }, []);
 
-      <div className="bg-white border border-[#e5e5e3]">
-        {loading ? (
-          <div className="p-12 text-center text-[#707070]">Loading...</div>
-        ) : bookings.length === 0 ? (
-          <div className="p-16 text-center">
-            <BookOpen className="h-12 w-12 text-[#e5e5e3] mx-auto mb-4" />
-            <p className="text-[#707070]">No booking requests yet.</p>
-          </div>
-        ) : (
-          <div className="divide-y divide-[#f0f0ee]">
-            {bookings.map(b => (
-              <div key={b.id} className="p-5 flex items-start justify-between gap-4 flex-wrap">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-semibold text-[#111111]">{b.firstName} {b.lastName}</span>
-                    <Badge variant={b.status === "PENDING" ? "warning" : b.status === "CONFIRMED" ? "success" : "secondary"}>
-                      {b.status}
-                    </Badge>
-                  </div>
-                  <div className="text-sm text-[#707070] space-y-0.5">
-                    <div>{b.email} · {b.phone}</div>
-                    <div>{b.vehicleYear} {b.vehicleMake} {b.vehicleModel} {b.vehicleColor ? `· ${b.vehicleColor}` : ""}</div>
-                    <div>Service: {b.serviceName || b.serviceId} · {formatDate(b.preferredDate)} at {b.preferredTime}</div>
-                    {b.notes && <div className="italic">"{b.notes}"</div>}
-                  </div>
-                  <div className="text-xs text-[#707070] mt-1">Ref: {b.reference}</div>
-                </div>
-                {b.status === "PENDING" && (
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    <Button variant="ghost" size="sm" className="text-red-500" onClick={() => updateStatus(b.id, "CANCELLED")}>
-                      <X className="h-4 w-4" /> Decline
-                    </Button>
-                    <Button variant="default" size="sm" onClick={() => updateStatus(b.id, "CONFIRMED")}>
-                      <Check className="h-4 w-4" /> Confirm
-                    </Button>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+  const updateStatus = async (id: string, status: string) => {
+    await fetch(`/api/bookings/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status }) });
+    load();
+  };
+
+  const statusVariant: Record<string, any> = { PENDING: "warning", CONFIRMED: "success", CANCELLED: "danger", COMPLETED: "default" };
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      <PageHeader title="Bookings" description="Incoming booking requests from your website." />
+      <div style={{ padding: 24 }}>
+        <div style={{ background: "var(--c-surface)", border: "1px solid var(--c-border)", borderRadius: "var(--r-lg)", overflow: "hidden" }}>
+          {bookings.length === 0 && !loading ? (
+            <EmptyState icon={<BookOpen size={20} />} title="No bookings yet" description="Booking requests from your website will appear here." />
+          ) : (
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={{ borderBottom: "1px solid var(--c-border)" }}>
+                  {["Reference", "Customer", "Contact", "Service", "Preferred Date", "Status", "Actions"].map(h => (
+                    <th key={h} style={{ padding: "12px 16px", textAlign: "left", fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--c-text-3)" }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {bookings.map((b: any) => (
+                  <tr key={b.id} style={{ borderBottom: "1px solid var(--c-border)", transition: "background var(--t-fast)" }}
+                    onMouseEnter={e => (e.currentTarget.style.background = "var(--c-surface-2)")}
+                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                  >
+                    <td style={{ padding: "14px 16px", fontSize: 13, fontWeight: 600, color: "var(--c-ink)" }}>{b.reference}</td>
+                    <td style={{ padding: "14px 16px" }}>
+                      <div style={{ fontSize: 13, fontWeight: 500, color: "var(--c-ink)" }}>{b.firstName} {b.lastName}</div>
+                      <div style={{ fontSize: 12, color: "var(--c-text-3)" }}>{b.vehicleInfo || "—"}</div>
+                    </td>
+                    <td style={{ padding: "14px 16px" }}>
+                      <div style={{ fontSize: 12, color: "var(--c-text-2)" }}>{b.email}</div>
+                      <div style={{ fontSize: 12, color: "var(--c-text-3)" }}>{b.phone}</div>
+                    </td>
+                    <td style={{ padding: "14px 16px", fontSize: 13, color: "var(--c-text-2)" }}>{b.serviceName || b.service?.name || "—"}</td>
+                    <td style={{ padding: "14px 16px", fontSize: 12, color: "var(--c-text-3)" }}>{b.preferredDate ? formatDate(b.preferredDate) : "—"}</td>
+                    <td style={{ padding: "14px 16px" }}>
+                      <Badge variant={statusVariant[b.status] || "default"}>{b.status}</Badge>
+                    </td>
+                    <td style={{ padding: "14px 16px" }}>
+                      {b.status === "PENDING" && (
+                        <div style={{ display: "flex", gap: 6 }}>
+                          <button onClick={() => updateStatus(b.id, "CONFIRMED")} style={{ width: 28, height: 28, borderRadius: 6, border: "1px solid var(--c-green)", background: "var(--c-green-bg)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--c-green)" }}>
+                            <Check size={13} />
+                          </button>
+                          <button onClick={() => updateStatus(b.id, "CANCELLED")} style={{ width: 28, height: 28, borderRadius: 6, border: "1px solid var(--c-red)", background: "var(--c-red-bg)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--c-red)" }}>
+                            <X size={13} />
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
     </div>
   );

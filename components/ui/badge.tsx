@@ -1,32 +1,42 @@
 import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
 
-const badgeVariants = cva(
-  "inline-flex items-center rounded-sm border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-  {
-    variants: {
-      variant: {
-        default: "border-transparent bg-[#0B0B0C] text-white",
-        secondary: "border-transparent bg-[#f0f0ee] text-[#0B0B0C]",
-        destructive: "border-transparent bg-red-100 text-red-700",
-        outline: "border-current",
-        success: "border-transparent bg-emerald-100 text-emerald-700",
-        warning: "border-transparent bg-amber-100 text-amber-700",
-        info: "border-transparent bg-blue-100 text-blue-700",
-        gold: "border-transparent bg-[#C9A86A]/20 text-[#8B6914]",
-      },
-    },
-    defaultVariants: { variant: "default" },
-  }
-);
+type BadgeVariant = "default" | "gold" | "success" | "warning" | "danger" | "info" | "outline";
 
-export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
-
-function Badge({ className, variant, ...props }: BadgeProps) {
-  return <div className={cn(badgeVariants({ variant }), className)} {...props} />;
+interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+  variant?: BadgeVariant;
 }
 
-export { Badge, badgeVariants };
+const styles: Record<BadgeVariant, React.CSSProperties> = {
+  default: { background: "var(--c-surface-2)", color: "var(--c-text-2)", borderColor: "var(--c-border)" },
+  gold:    { background: "rgba(184,155,99,0.12)", color: "var(--c-gold)", borderColor: "rgba(184,155,99,0.25)" },
+  success: { background: "var(--c-green-bg)", color: "var(--c-green)", borderColor: "rgba(22,163,74,0.2)" },
+  warning: { background: "var(--c-amber-bg)", color: "var(--c-amber)", borderColor: "rgba(217,119,6,0.2)" },
+  danger:  { background: "var(--c-red-bg)", color: "var(--c-red)", borderColor: "rgba(220,38,38,0.2)" },
+  info:    { background: "var(--c-blue-bg)", color: "var(--c-blue)", borderColor: "rgba(37,99,235,0.2)" },
+  outline: { background: "transparent", color: "var(--c-text-2)", borderColor: "var(--c-border-2)" },
+};
+
+export function Badge({ variant = "default", style, ...props }: BadgeProps) {
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 4,
+        height: 22,
+        paddingLeft: 8,
+        paddingRight: 8,
+        fontSize: 11,
+        fontWeight: 600,
+        letterSpacing: "0.04em",
+        textTransform: "uppercase",
+        borderRadius: 6,
+        border: "1px solid",
+        whiteSpace: "nowrap",
+        ...styles[variant],
+        ...style,
+      }}
+      {...props}
+    />
+  );
+}

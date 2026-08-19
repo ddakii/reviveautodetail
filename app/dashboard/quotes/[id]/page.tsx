@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { getQuoteStatusBadge } from "@/lib/status";
+import { QuoteStatusBadge } from "@/lib/status";
 
 export default function QuoteDetailPage() {
   const { id } = useParams();
@@ -50,7 +50,7 @@ export default function QuoteDetailPage() {
           <div>
             <div className="flex items-center gap-3">
               <h1 className="text-xl font-bold text-[#111111]">{quote.number}</h1>
-              {getQuoteStatusBadge(quote.status)}
+              <QuoteStatusBadge status={quote.status} />
             </div>
             <p className="text-[#707070] text-sm">{quote.customer?.firstName} {quote.customer?.lastName}</p>
           </div>

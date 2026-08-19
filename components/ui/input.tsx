@@ -1,37 +1,45 @@
 import * as React from "react";
-import { cn } from "@/lib/utils";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
+  hint?: string;
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, label, error, id, ...props }, ref) => {
-    const inputId = id || label?.toLowerCase().replace(/\s+/g, "-");
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ label, error, hint, style, className, ...props }, ref) => {
     return (
-      <div className="w-full">
+      <div style={{ display: "flex", flexDirection: "column", gap: 6, width: "100%" }}>
         {label && (
-          <label htmlFor={inputId} className="block text-xs font-medium text-[#707070] uppercase tracking-wider mb-1.5">
+          <label style={{ fontSize: 13, fontWeight: 500, color: "var(--c-text-2)", display: "block" }}>
             {label}
+            {props.required && <span style={{ color: "var(--c-red)", marginLeft: 2 }}>*</span>}
           </label>
         )}
         <input
-          id={inputId}
-          type={type}
-          className={cn(
-            "flex h-10 w-full border border-[#e5e5e3] bg-white px-3 py-2 text-sm text-[#111111] placeholder:text-[#aaa] focus:outline-none focus:border-[#0B0B0C] focus:ring-1 focus:ring-[#0B0B0C] disabled:cursor-not-allowed disabled:opacity-50 transition-colors",
-            error && "border-red-500 focus:border-red-500 focus:ring-red-500",
-            className
-          )}
           ref={ref}
+          style={{
+            width: "100%",
+            height: 40,
+            padding: "0 12px",
+            fontSize: 14,
+            fontFamily: "inherit",
+            color: "var(--c-text)",
+            background: "var(--c-surface)",
+            border: `1px solid ${error ? "var(--c-red)" : "var(--c-border-2)"}`,
+            borderRadius: "var(--r-md)",
+            outline: "none",
+            transition: "border-color var(--t-fast)",
+            ...style,
+          }}
+          onFocus={e => { e.currentTarget.style.borderColor = error ? "var(--c-red)" : "var(--c-gold)"; }}
+          onBlur={e => { e.currentTarget.style.borderColor = error ? "var(--c-red)" : "var(--c-border-2)"; }}
           {...props}
         />
-        {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
+        {error && <span style={{ fontSize: 12, color: "var(--c-red)" }}>{error}</span>}
+        {hint && !error && <span style={{ fontSize: 12, color: "var(--c-text-3)" }}>{hint}</span>}
       </div>
     );
   }
 );
 Input.displayName = "Input";
-
-export { Input };

@@ -1,124 +1,72 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle } from "lucide-react";
+import { PageHeader } from "@/components/ui/page-header";
+
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+function Field({ label, value, onChange, type = "text", placeholder = "" }: any) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <label style={{ fontSize: 13, fontWeight: 500, color: "var(--c-text-2)" }}>{label}</label>
+      <input type={type} value={value || ""} onChange={e => onChange(e.target.value)} placeholder={placeholder} style={{ height: 40, padding: "0 12px", borderRadius: "var(--r-md)", border: "1px solid var(--c-border-2)", fontSize: 14, fontFamily: "inherit", outline: "none", background: "var(--c-surface)", width: "100%" }} />
+    </div>
+  );
+}
 
 export default function SettingsPage() {
-  const [settings, setSettings] = useState<any>({
-    name: "Revive Auto Detail",
-    email: "hello@reviveautodetail.com",
-    phone: "(555) 847-2100",
-    address: "1420 Auto Blvd, Suite 100",
-    city: "Los Angeles",
-    state: "CA",
-    zip: "90001",
-    website: "https://reviveautodetail.com",
-    taxRate: 0,
-    currency: "USD",
-    invoicePrefix: "INV",
-    quotePrefix: "QUO",
-    aptPrefix: "APT",
-    invoiceTerms: "Payment due within 30 days.",
-    footerMessage: "Thank you for trusting Revive Auto Detail with your vehicle.",
-    mondayHours: "8:00 AM – 6:00 PM",
-    tuesdayHours: "8:00 AM – 6:00 PM",
-    wednesdayHours: "8:00 AM – 6:00 PM",
-    thursdayHours: "8:00 AM – 6:00 PM",
-    fridayHours: "8:00 AM – 6:00 PM",
-    saturdayHours: "9:00 AM – 5:00 PM",
-    sundayHours: "Closed",
-  });
-  const [saving, setSaving] = useState(false);
+  const [settings, setSettings] = useState<any>({ businessName: "Revive Auto Detail", email: "", phone: "", address: "", city: "", state: "", zip: "", website: "", businessHours: {} });
+  const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const set = (k: string, v: any) => setSettings((s: any) => ({ ...s, [k]: v }));
+  useEffect(() => {
+    fetch("/api/settings").then(r => r.json()).then(d => { if (d && !d.error) setSettings(d); }).catch(() => {});
+  }, []);
+
+  const f = (key: string, val: any) => setSettings((p: any) => ({ ...p, [key]: val }));
 
   const save = async () => {
-    setSaving(true);
-    try {
-      await fetch("/api/settings", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(settings),
-      });
-      setSaved(true);
-      setTimeout(() => setSaved(false), 3000);
-    } finally {
-      setSaving(false);
-    }
+    setLoading(true);
+    const r = await fetch("/api/settings", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(settings) });
+    setLoading(false);
+    if (r.ok) { setSaved(true); setTimeout(() => setSaved(false), 3000); }
   };
 
   return (
-    <div className="p-6 lg:p-8 max-w-3xl">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-[#111111]">Settings</h1>
-          <p className="text-[#707070] text-sm mt-0.5">Manage your business settings</p>
+    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      <PageHeader title="Settings" description="Manage your business information." />
+      <div style={{ padding: 24, maxWidth: 720, display: "flex", flexDirection: "column", gap: 24 }}>
+
+        {/* Business Info */}
+        <div style={{ background: "var(--c-surface)", border: "1px solid var(--c-border)", borderRadius: "var(--r-lg)", overflow: "hidden" }}>
+          <div style={{ padding: "20px 24px", borderBottom: "1px solid var(--c-border)" }}>
+            <h2 style={{ fontSize: 15, fontWeight: 600, color: "var(--c-ink)" }}>Business Information</h2>
+            <p style={{ fontSize: 13, color: "var(--c-text-3)", marginTop: 2 }}>Your business name, contact, and location details.</p>
+          </div>
+          <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <div style={{ gridColumn: "1 / -1" }}>
+              <Field label="Business Name" value={settings.businessName} onChange={(v: string) => f("businessName", v)} placeholder="Revive Auto Detail" />
+            </div>
+            <Field label="Email" value={settings.email} onChange={(v: string) => f("email", v)} placeholder="hello@reviveautodetail.com" />
+            <Field label="Phone" value={settings.phone} onChange={(v: string) => f("phone", v)} placeholder="(555) 847-2100" />
+            <Field label="Website" value={settings.website} onChange={(v: string) => f("website", v)} placeholder="https://reviveautodetail.com" />
+            <div />
+            <div style={{ gridColumn: "1 / -1" }}>
+              <Field label="Street Address" value={settings.address} onChange={(v: string) => f("address", v)} placeholder="1420 Auto Blvd, Suite 100" />
+            </div>
+            <Field label="City" value={settings.city} onChange={(v: string) => f("city", v)} placeholder="Los Angeles" />
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <Field label="State" value={settings.state} onChange={(v: string) => f("state", v)} placeholder="CA" />
+              <Field label="ZIP" value={settings.zip} onChange={(v: string) => f("zip", v)} placeholder="90001" />
+            </div>
+          </div>
         </div>
-        <Button onClick={save} loading={saving} variant={saved ? "ghost" : "default"}>
-          {saved ? <><CheckCircle className="h-4 w-4 text-emerald-600" /> Saved</> : "Save Changes"}
-        </Button>
-      </div>
 
-      <div className="space-y-6">
-        <section className="bg-white border border-[#e5e5e3] p-6">
-          <h2 className="font-semibold text-[#111111] text-sm uppercase tracking-wider mb-4 pb-3 border-b border-[#e5e5e3]">Business Information</h2>
-          <div className="space-y-4">
-            <Input label="Business Name" value={settings.name} onChange={e => set("name", e.target.value)} />
-            <div className="grid grid-cols-2 gap-3">
-              <Input label="Email" type="email" value={settings.email} onChange={e => set("email", e.target.value)} />
-              <Input label="Phone" value={settings.phone} onChange={e => set("phone", e.target.value)} />
-            </div>
-            <Input label="Address" value={settings.address} onChange={e => set("address", e.target.value)} />
-            <div className="grid grid-cols-3 gap-3">
-              <Input label="City" value={settings.city} onChange={e => set("city", e.target.value)} />
-              <Input label="State" value={settings.state} onChange={e => set("state", e.target.value)} />
-              <Input label="ZIP" value={settings.zip} onChange={e => set("zip", e.target.value)} />
-            </div>
-            <Input label="Website" value={settings.website} onChange={e => set("website", e.target.value)} />
-          </div>
-        </section>
-
-        <section className="bg-white border border-[#e5e5e3] p-6">
-          <h2 className="font-semibold text-[#111111] text-sm uppercase tracking-wider mb-4 pb-3 border-b border-[#e5e5e3]">Invoice & Quote Settings</h2>
-          <div className="space-y-4">
-            <div className="grid grid-cols-3 gap-3">
-              <Input label="Invoice Prefix" value={settings.invoicePrefix} onChange={e => set("invoicePrefix", e.target.value)} />
-              <Input label="Quote Prefix" value={settings.quotePrefix} onChange={e => set("quotePrefix", e.target.value)} />
-              <Input label="Apt. Prefix" value={settings.aptPrefix} onChange={e => set("aptPrefix", e.target.value)} />
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <Input label="Tax Rate (%)" type="number" value={settings.taxRate} onChange={e => set("taxRate", parseFloat(e.target.value) || 0)} />
-              <Input label="Currency" value={settings.currency} onChange={e => set("currency", e.target.value)} />
-            </div>
-            <Textarea label="Invoice Terms" value={settings.invoiceTerms} onChange={e => set("invoiceTerms", e.target.value)} rows={2} />
-            <Textarea label="Invoice Footer Message" value={settings.footerMessage} onChange={e => set("footerMessage", e.target.value)} rows={2} />
-          </div>
-        </section>
-
-        <section className="bg-white border border-[#e5e5e3] p-6">
-          <h2 className="font-semibold text-[#111111] text-sm uppercase tracking-wider mb-4 pb-3 border-b border-[#e5e5e3]">Business Hours</h2>
-          <div className="space-y-3">
-            {[
-              { day: "Monday", key: "mondayHours" },
-              { day: "Tuesday", key: "tuesdayHours" },
-              { day: "Wednesday", key: "wednesdayHours" },
-              { day: "Thursday", key: "thursdayHours" },
-              { day: "Friday", key: "fridayHours" },
-              { day: "Saturday", key: "saturdayHours" },
-              { day: "Sunday", key: "sundayHours" },
-            ].map(({ day, key }) => (
-              <div key={key} className="grid grid-cols-3 gap-3 items-center">
-                <label className="text-sm font-medium text-[#111111]">{day}</label>
-                <div className="col-span-2">
-                  <Input value={(settings as any)[key]} onChange={e => set(key, e.target.value)} placeholder="Closed" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* Actions */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <Button variant="primary" onClick={save} loading={loading}>Save Changes</Button>
+          {saved && <span style={{ fontSize: 13, color: "var(--c-green)", fontWeight: 500 }}>✓ Saved successfully</span>}
+        </div>
       </div>
     </div>
   );

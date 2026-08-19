@@ -1,42 +1,55 @@
 "use client";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { formatCurrency } from "@/lib/utils";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
-interface RevenueChartProps {
+interface Props {
   data: { month: string; revenue: number }[];
 }
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
+function CustomTooltip({ active, payload, label }: any) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div style={{
+      background: "var(--c-ink)",
+      border: "1px solid rgba(255,255,255,0.1)",
+      borderRadius: "var(--r-sm)",
+      padding: "8px 12px",
+    }}>
+      <div style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", marginBottom: 2 }}>{label}</div>
+      <div style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>
+        ${payload[0].value.toLocaleString()}
+      </div>
+    </div>
+  );
+}
+
+export function RevenueChart({ data }: Props) {
+  if (!data || data.length === 0) {
     return (
-      <div className="bg-[#0B0B0C] text-white px-3 py-2 text-sm">
-        <p className="text-white/50 text-xs uppercase tracking-wider">{label}</p>
-        <p className="font-semibold">{formatCurrency(payload[0].value)}</p>
+      <div style={{ height: 200, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--c-text-3)", fontSize: 13 }}>
+        No revenue data yet
       </div>
     );
   }
-  return null;
-};
 
-export function RevenueChart({ data }: RevenueChartProps) {
   return (
-    <ResponsiveContainer width="100%" height={220}>
-      <BarChart data={data} barSize={32} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0ee" vertical={false} />
+    <ResponsiveContainer width="100%" height={200}>
+      <BarChart data={data} barSize={28}>
+        <CartesianGrid vertical={false} stroke="var(--c-border)" strokeDasharray="0" />
         <XAxis
           dataKey="month"
           axisLine={false}
           tickLine={false}
-          tick={{ fill: "#707070", fontSize: 11 }}
+          tick={{ fill: "var(--c-text-3)", fontSize: 12 }}
         />
         <YAxis
           axisLine={false}
           tickLine={false}
-          tick={{ fill: "#707070", fontSize: 11 }}
-          tickFormatter={(v) => `$${v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}`}
+          tick={{ fill: "var(--c-text-3)", fontSize: 12 }}
+          tickFormatter={v => `$${v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}`}
+          width={45}
         />
-        <Tooltip content={<CustomTooltip />} cursor={{ fill: "#f5f5f3" }} />
-        <Bar dataKey="revenue" fill="#C9A86A" radius={[2, 2, 0, 0]} />
+        <Tooltip content={<CustomTooltip />} cursor={{ fill: "var(--c-surface-2)" }} />
+        <Bar dataKey="revenue" fill="var(--c-gold)" radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );

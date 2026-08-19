@@ -2,34 +2,28 @@
 import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
-import { Bell, Search, Menu, Plus, User, LogOut, Settings } from "lucide-react";
+import { Bell, Menu, Plus, Settings, LogOut, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { getInitials } from "@/lib/utils";
-import { cn } from "@/lib/utils";
 
 interface TopbarProps {
   onToggleSidebar?: () => void;
-  title?: string;
 }
 
-export function Topbar({ onToggleSidebar, title }: TopbarProps) {
+export function Topbar({ onToggleSidebar }: TopbarProps) {
   const { data: session } = useSession();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unread, setUnread] = useState(0);
-  const [notifOpen, setNotifOpen] = useState(false);
+  const name = session?.user?.name || "Admin";
 
   useEffect(() => {
     fetch("/api/notifications")
-      .then((r) => r.json())
-      .then((data) => {
+      .then(r => r.json())
+      .then(data => {
         const list = Array.isArray(data) ? data : [];
         setNotifications(list);
         setUnread(list.filter((n: any) => !n.read).length);
@@ -42,38 +36,53 @@ export function Topbar({ onToggleSidebar, title }: TopbarProps) {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ markAllRead: true }),
-    });
-    setNotifications((n) => n.map((x) => ({ ...x, read: true })));
+    }).catch(() => {});
+    setNotifications(n => n.map(x => ({ ...x, read: true })));
     setUnread(0);
   };
 
-  const name = session?.user?.name || "Admin";
-
   return (
-    <header className="h-16 bg-white border-b border-[#e5e5e3] flex items-center justify-between px-4 lg:px-6 flex-shrink-0">
-      <div className="flex items-center gap-3">
+    <header style={{
+      height: 60,
+      background: "var(--c-surface)",
+      borderBottom: "1px solid var(--c-border)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: "0 24px",
+      flexShrink: 0,
+      gap: 12,
+    }}>
+      {/* Left */}
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
         <button
           onClick={onToggleSidebar}
-          className="p-2 text-[#707070] hover:text-[#111111] hover:bg-[#f5f5f3] rounded-sm transition-colors"
+          style={{
+            width: 32, height: 32, borderRadius: "var(--r-sm)",
+            background: "transparent", border: "none", cursor: "pointer",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            color: "var(--c-text-3)", transition: "background var(--t-fast)",
+          }}
+          onMouseEnter={e => (e.currentTarget.style.background = "var(--c-surface-2)")}
+          onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
         >
-          <Menu className="h-5 w-5" />
+          <Menu size={16} />
         </button>
-        {title && (
-          <h1 className="text-[#111111] font-semibold text-base hidden sm:block">{title}</h1>
-        )}
       </div>
 
-      <div className="flex items-center gap-2">
+      {/* Right */}
+      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
         {/* Quick Add */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="gold" size="sm" className="hidden sm:flex gap-1.5">
-              <Plus className="h-3.5 w-3.5" />
+            <Button variant="gold" size="sm" style={{ gap: 6 }}>
+              <Plus size={14} />
               New
+              <ChevronDown size={12} style={{ opacity: 0.7 }} />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuLabel>Quick Actions</DropdownMenuLabel>
+          <DropdownMenuContent align="end" style={{ minWidth: 180 }}>
+            <DropdownMenuLabel>Quick Create</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild><Link href="/dashboard/customers?new=1">New Customer</Link></DropdownMenuItem>
             <DropdownMenuItem asChild><Link href="/dashboard/vehicles?new=1">New Vehicle</Link></DropdownMenuItem>
@@ -84,65 +93,98 @@ export function Topbar({ onToggleSidebar, title }: TopbarProps) {
         </DropdownMenu>
 
         {/* Notifications */}
-        <DropdownMenu open={notifOpen} onOpenChange={setNotifOpen}>
+        <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="relative p-2 text-[#707070] hover:text-[#111111] hover:bg-[#f5f5f3] rounded-sm transition-colors">
-              <Bell className="h-5 w-5" />
+            <button style={{
+              position: "relative", width: 36, height: 36,
+              borderRadius: "var(--r-sm)", background: "transparent",
+              border: "none", cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              color: "var(--c-text-3)", transition: "background var(--t-fast)",
+            }}
+              onMouseEnter={e => (e.currentTarget.style.background = "var(--c-surface-2)")}
+              onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+            >
+              <Bell size={16} />
               {unread > 0 && (
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#C9A86A] rounded-full" />
+                <span style={{
+                  position: "absolute", top: 7, right: 7,
+                  width: 7, height: 7, borderRadius: "50%",
+                  background: "var(--c-gold)",
+                  border: "1.5px solid var(--c-surface)",
+                }} />
               )}
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-80">
-            <div className="flex items-center justify-between px-2 py-1.5">
-              <DropdownMenuLabel className="p-0">Notifications</DropdownMenuLabel>
+          <DropdownMenuContent align="end" style={{ width: 320 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 12px 4px" }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "var(--c-ink)" }}>Notifications</span>
               {unread > 0 && (
-                <button onClick={markAllRead} className="text-xs text-[#C9A86A] hover:underline">
+                <button onClick={markAllRead} style={{ fontSize: 12, color: "var(--c-gold)", background: "none", border: "none", cursor: "pointer", padding: 0 }}>
                   Mark all read
                 </button>
               )}
             </div>
             <DropdownMenuSeparator />
             {notifications.length === 0 ? (
-              <div className="px-2 py-4 text-center text-sm text-[#707070]">No notifications</div>
-            ) : (
-              notifications.slice(0, 8).map((n) => (
-                <DropdownMenuItem key={n.id} asChild>
-                  <Link href={n.link || "/dashboard"} className={cn("flex flex-col gap-0.5 py-2", !n.read && "bg-[#fafaf8]")}>
-                    <span className={cn("text-sm font-medium", !n.read ? "text-[#111111]" : "text-[#707070]")}>
-                      {n.title}
-                    </span>
-                    <span className="text-xs text-[#707070] whitespace-normal">{n.message}</span>
-                  </Link>
-                </DropdownMenuItem>
-              ))
-            )}
+              <div style={{ padding: "24px 12px", textAlign: "center", fontSize: 13, color: "var(--c-text-3)" }}>
+                No notifications
+              </div>
+            ) : notifications.slice(0, 6).map(n => (
+              <DropdownMenuItem key={n.id} asChild>
+                <Link href={n.link || "/dashboard"} style={{ display: "flex", flexDirection: "column", gap: 2, padding: "8px 12px" }}>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: n.read ? "var(--c-text-2)" : "var(--c-ink)" }}>{n.title}</span>
+                  <span style={{ fontSize: 12, color: "var(--c-text-3)" }}>{n.message}</span>
+                </Link>
+              </DropdownMenuItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        {/* Divider */}
+        <div style={{ width: 1, height: 20, background: "var(--c-border)", margin: "0 4px" }} />
 
         {/* User */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-2 p-1.5 hover:bg-[#f5f5f3] rounded-sm transition-colors">
-              <div className="w-8 h-8 bg-[#0B0B0C] flex items-center justify-center text-white text-xs font-semibold">
+            <button style={{
+              display: "flex", alignItems: "center", gap: 8,
+              padding: "4px 8px 4px 4px",
+              borderRadius: "var(--r-md)",
+              background: "transparent", border: "none", cursor: "pointer",
+              transition: "background var(--t-fast)",
+            }}
+              onMouseEnter={e => (e.currentTarget.style.background = "var(--c-surface-2)")}
+              onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+            >
+              <div style={{
+                width: 28, height: 28,
+                borderRadius: "var(--r-sm)",
+                background: "var(--c-ink)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 11, fontWeight: 700, color: "#fff",
+                letterSpacing: "0.02em",
+              }}>
                 {getInitials(name)}
               </div>
+              <span style={{ fontSize: 13, fontWeight: 500, color: "var(--c-ink)" }}>{name}</span>
+              <ChevronDown size={12} style={{ color: "var(--c-text-3)" }} />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-44">
+          <DropdownMenuContent align="end" style={{ minWidth: 160 }}>
             <DropdownMenuLabel>{name}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/dashboard/settings" className="flex items-center gap-2">
-                <Settings className="h-4 w-4" /> Settings
+              <Link href="/dashboard/settings" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Settings size={13} /> Settings
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="text-red-600 focus:text-red-600 focus:bg-red-50 flex items-center gap-2"
+              style={{ color: "var(--c-red)", display: "flex", alignItems: "center", gap: 8 }}
               onClick={() => signOut({ callbackUrl: "/auth/login" })}
             >
-              <LogOut className="h-4 w-4" /> Sign Out
+              <LogOut size={13} /> Sign Out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -76,8 +76,12 @@ export async function GET() {
       unreadNotifications: notifications,
       revenueByMonth,
     });
-  } catch (error) {
-    console.error("Stats error:", error);
-    return NextResponse.json({ error: "Failed to fetch stats" }, { status: 500 });
+  } catch {
+    return NextResponse.json({
+      totalRevenue: 0, monthlyRevenue: 0, outstanding: 0, outstandingCount: 0,
+      totalCustomers: 0, newCustomersThisMonth: 0, appointments: 0,
+      upcomingAppointments: 0, completedJobs: 0, unreadNotifications: 0,
+      revenueByMonth: [],
+    });
   }
 }

@@ -1,8 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Clock, ArrowRight, Check } from "lucide-react";
+import { Clock } from "lucide-react";
 import { formatCurrency, getDurationLabel } from "@/lib/utils";
 
 const SERVICE_IMAGES: Record<string, string> = {
@@ -58,9 +57,9 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
             <div className="text-white/50 text-xs uppercase tracking-wider mb-2">Starting From</div>
             <div className="text-3xl font-bold text-[#C9A86A] mb-4">{formatCurrency(service.price)}</div>
             <div className="text-white/50 text-sm mb-6">Duration: {getDurationLabel(service.duration)}</div>
-            <Button variant="gold" className="w-full" asChild>
-              <Link href="/booking">Book This Service</Link>
-            </Button>
+            <Link href="/booking" className="ui-btn ui-btn-gold ui-btn-default" style={{ width: "100%" }}>
+              Book This Service
+            </Link>
             <Link href="/services" className="block text-center text-white/40 text-xs mt-3 hover:text-white/60">← All Services</Link>
           </div>
         </div>
