@@ -14,7 +14,7 @@ export default function TeamPage() {
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <PageHeader title="Team" description="Your detailing team members." />
       <div style={{ padding: 24 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
+        <div className="grid-auto">
           {TEAM.map(member => (
             <div key={member.email} style={{ background: "var(--c-surface)", border: "1px solid var(--c-border)", borderRadius: "var(--r-lg)", padding: 24 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>

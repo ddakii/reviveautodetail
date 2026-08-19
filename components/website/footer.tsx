@@ -4,8 +4,8 @@ import Link from "next/link";
 export function Footer() {
   return (
     <footer style={{ background: "var(--c-black)", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "72px 32px 40px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1.4fr", gap: 48, marginBottom: 56 }}>
+      <div className="wrap" style={{ paddingTop: 72, paddingBottom: 40 }}>
+        <div className="grid-footer">
           {/* Brand */}
           <div>
             <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 10, textDecoration: "none", marginBottom: 16 }}>

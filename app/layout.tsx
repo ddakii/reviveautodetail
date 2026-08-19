@@ -1,5 +1,13 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: "#090909",
+};
 
 export const metadata: Metadata = {
   title: "Revive Auto Detail | Premium Automotive Detailing",

@@ -51,14 +51,14 @@ export default function HomePage() {
     <div style={{ background: "#F7F7F5" }}>
 
       {/* ── 01 HERO ──────────────────────────────────────── */}
-      <section style={{ position: "relative", minHeight: "100vh", background: "#090909", display: "flex", flexDirection: "column", justifyContent: "flex-end", overflow: "hidden" }}>
+      <section className="hero-full" style={{ position: "relative", minHeight: "100vh", background: "#090909", display: "flex", flexDirection: "column", justifyContent: "flex-end", overflow: "hidden" }}>
         <img src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=1920&q=85" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.45 }} />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(9,9,9,0.05) 0%, rgba(9,9,9,0.25) 40%, rgba(9,9,9,0.92) 100%)" }} />
-        <div style={{ position: "absolute", top: 96, left: 48, display: "flex", alignItems: "center", gap: 12 }}>
+        <div className="hero-kicker" style={{ position: "absolute", top: 96, left: 48, display: "flex", alignItems: "center", gap: 12, maxWidth: "calc(100% - 40px)" }}>
           <div style={{ width: 1, height: 24, background: "var(--c-gold)", opacity: 0.5 }} />
           <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.4)", letterSpacing: "0.15em", textTransform: "uppercase" }}>Premium Automotive Detailing</span>
         </div>
-        <div style={{ position: "relative", maxWidth: 1200, margin: "0 auto", padding: "0 48px 88px", width: "100%" }}>
+        <div className="wrap" style={{ position: "relative", paddingTop: 0, paddingBottom: 88, width: "100%" }}>
           <div style={{ maxWidth: 700 }}>
             <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.25)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 20 }}>— 01</div>
             <h1 style={{ fontSize: "clamp(44px, 6.5vw, 76px)", fontWeight: 800, color: "#fff", lineHeight: 1.05, letterSpacing: "-0.03em", marginBottom: 24 }}>
@@ -77,9 +77,9 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 0, marginTop: 56, borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 32 }}>
-            {[["500+", "Vehicles Serviced"], ["5.0 ★", "Average Rating"], ["8 Years", "In Business"], ["100%", "Satisfaction"]].map(([val, lbl], i) => (
-              <div key={i} style={{ paddingRight: 40, marginRight: 40, borderRight: i < 3 ? "1px solid rgba(255,255,255,0.07)" : "none" }}>
+          <div className="hero-stats">
+            {[["500+", "Vehicles Serviced"], ["5.0 ★", "Average Rating"], ["8 Years", "In Business"], ["100%", "Satisfaction"]].map(([val, lbl]) => (
+              <div key={lbl} className="hero-stat">
                 <div style={{ fontSize: 22, fontWeight: 700, color: "#fff", letterSpacing: "-0.02em" }}>{val}</div>
                 <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginTop: 4, letterSpacing: "0.04em" }}>{lbl}</div>
               </div>
@@ -90,7 +90,7 @@ export default function HomePage() {
 
       {/* ── 02 STATEMENT ──────────────────────────────────── */}
       <section style={{ background: "#fff", borderBottom: "1px solid #E4E4E1" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "64px 48px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}>
+        <div className="wrap grid-2" style={{ paddingTop: 64, paddingBottom: 64 }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 600, color: "var(--c-gold)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>02 — Our Standard</div>
             <h2 style={{ fontSize: "clamp(22px, 3vw, 36px)", fontWeight: 700, color: "var(--c-ink)", letterSpacing: "-0.02em", lineHeight: 1.25 }}>
@@ -104,7 +104,7 @@ export default function HomePage() {
       </section>
 
       {/* ── 03 SERVICES ───────────────────────────────────── */}
-      <section style={{ maxWidth: 1200, margin: "0 auto", padding: "96px 48px" }}>
+      <section className="wrap section-y">
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 48, flexWrap: "wrap", gap: 16 }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 600, color: "var(--c-gold)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 10 }}>03 — Services</div>
@@ -114,14 +114,14 @@ export default function HomePage() {
             View all <ChevronRight size={14} />
           </Link>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 1, background: "var(--c-border)" }}>
+        <div className="grid-3" style={{ gap: 1, background: "var(--c-border)" }}>
           {SERVICES.map(svc => <ServiceCard key={svc.slug} svc={svc} />)}
         </div>
       </section>
 
       {/* ── 04 WHY REVIVE ─────────────────────────────────── */}
       <section style={{ background: "var(--c-ink)" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "96px 48px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
+        <div className="wrap grid-2-wide section-y">
           <div>
             <div style={{ fontSize: 11, fontWeight: 600, color: "var(--c-gold)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 16 }}>04 — Why Revive</div>
             <h2 style={{ fontSize: "clamp(24px, 3.5vw, 40px)", fontWeight: 700, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1.2, marginBottom: 20 }}>
@@ -153,12 +153,12 @@ export default function HomePage() {
 
       {/* ── 05 PROCESS ────────────────────────────────────── */}
       <section style={{ background: "#fff" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "96px 48px" }}>
+        <div className="wrap section-y">
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <div style={{ fontSize: 11, fontWeight: 600, color: "var(--c-gold)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>05 — Process</div>
             <h2 style={{ fontSize: "clamp(24px, 3.5vw, 42px)", fontWeight: 700, color: "var(--c-ink)", letterSpacing: "-0.02em" }}>How it works</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1, background: "var(--c-border)" }}>
+          <div className="grid-4" style={{ gap: 1, background: "var(--c-border)" }}>
             {PROCESS.map(({ step, title, desc }) => (
               <div key={step} style={{ background: "#fff", padding: "40px 28px" }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: "var(--c-gold)", letterSpacing: "0.12em", marginBottom: 20 }}>{step}</div>
@@ -172,12 +172,12 @@ export default function HomePage() {
 
       {/* ── 06 TESTIMONIALS ───────────────────────────────── */}
       <section style={{ background: "#F7F7F5" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "96px 48px" }}>
+        <div className="wrap section-y">
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <div style={{ fontSize: 11, fontWeight: 600, color: "var(--c-gold)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>06 — Reviews</div>
             <h2 style={{ fontSize: "clamp(24px, 3.5vw, 42px)", fontWeight: 700, color: "var(--c-ink)", letterSpacing: "-0.02em" }}>Client Stories</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+          <div className="grid-3" style={{ gap: 16 }}>
             {TESTIMONIALS.map((t, i) => (
               <div key={i} style={{ background: "#fff", border: "1px solid var(--c-border)", borderRadius: 14, padding: 32 }}>
                 <div style={{ display: "flex", gap: 3, marginBottom: 20 }}>
@@ -197,7 +197,7 @@ export default function HomePage() {
       {/* ── 07 CTA ────────────────────────────────────────── */}
       <section style={{ background: "var(--c-ink)", position: "relative", overflow: "hidden" }}>
         <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=80" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.1 }} />
-        <div style={{ position: "relative", maxWidth: 680, margin: "0 auto", padding: "96px 48px", textAlign: "center" }}>
+        <div className="wrap section-y" style={{ position: "relative", maxWidth: 680, textAlign: "center" }}>
           <div style={{ width: 1, height: 48, background: "var(--c-gold)", margin: "0 auto 32px", opacity: 0.4 }} />
           <h2 style={{ fontSize: "clamp(26px, 4vw, 50px)", fontWeight: 700, color: "#fff", letterSpacing: "-0.025em", lineHeight: 1.15, marginBottom: 20 }}>
             Your vehicle is ready to be revived.

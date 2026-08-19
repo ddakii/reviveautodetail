@@ -32,13 +32,13 @@ function PhotoCard({ src, label }: { src: string; label: string }) {
 export default function GalleryPage() {
   return (
     <div style={{ background: "#F7F7F5", paddingTop: 64 }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "72px 48px" }}>
+      <div className="wrap section-y-sm">
         <div style={{ marginBottom: 48 }}>
           <div style={{ fontSize: 11, fontWeight: 600, color: "var(--c-gold)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>Our Work</div>
           <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 700, color: "var(--c-ink)", letterSpacing: "-0.025em" }}>The results speak for themselves.</h1>
           <p style={{ fontSize: 15, color: "var(--c-text-3)", marginTop: 12, maxWidth: 440 }}>A selection of completed work across our full range of services.</p>
         </div>
-        <div style={{ columns: 3, columnGap: 16 }}>
+        <div className="gallery-cols">
           {PHOTOS.map((photo, i) => <PhotoCard key={i} {...photo} />)}
         </div>
       </div>

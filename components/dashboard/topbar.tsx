@@ -49,7 +49,7 @@ export function Topbar({ onToggleSidebar }: TopbarProps) {
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      padding: "0 24px",
+      padding: "0 16px",
       flexShrink: 0,
       gap: 12,
     }}>
@@ -116,7 +116,7 @@ export function Topbar({ onToggleSidebar }: TopbarProps) {
               )}
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" style={{ width: 320 }}>
+          <DropdownMenuContent align="end" style={{ width: "min(320px, calc(100vw - 24px))" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 12px 4px" }}>
               <span style={{ fontSize: 13, fontWeight: 600, color: "var(--c-ink)" }}>Notifications</span>
               {unread > 0 && (
@@ -167,7 +167,7 @@ export function Topbar({ onToggleSidebar }: TopbarProps) {
               }}>
                 {getInitials(name)}
               </div>
-              <span style={{ fontSize: 13, fontWeight: 500, color: "var(--c-ink)" }}>{name}</span>
+              <span className="topbar-name">{name}</span>
               <ChevronDown size={12} style={{ color: "var(--c-text-3)" }} />
             </button>
           </DropdownMenuTrigger>

@@ -56,7 +56,7 @@ export default async function DashboardPage() {
   const s = await getStats();
 
   return (
-    <div style={{ padding: 32, display: "flex", flexDirection: "column", gap: 24 }}>
+    <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 24 }}>
       {/* Header */}
       <div>
         <h1 style={{ fontSize: 22, fontWeight: 700, color: "var(--c-ink)", letterSpacing: "-0.02em" }}>Overview</h1>
@@ -64,7 +64,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
+      <div className="grid-auto">
         <StatsCard
           label="Total Revenue"
           value={formatCurrency(s.totalRevenue)}
@@ -95,7 +95,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Charts + Upcoming */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 16 }}>
+      <div className="dash-split">
         {/* Revenue chart */}
         <div style={{
           background: "var(--c-surface)",
@@ -164,7 +164,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Bottom stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }}>
+      <div className="grid-auto">
         {[
           { label: "Completed Jobs", value: String(s.completedJobs) },
           { label: "Active Customers", value: String(s.totalCustomers) },

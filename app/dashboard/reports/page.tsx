@@ -20,7 +20,7 @@ export default function ReportsPage() {
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <PageHeader title="Reports" description="Business performance and analytics." />
       <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 24 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
+        <div className="grid-auto">
           <StatsCard label="Total Revenue" value={formatCurrency(s.totalRevenue)} sub={`${formatCurrency(s.monthlyRevenue)} this month`} icon={<DollarSign size={15} />} accent />
           <StatsCard label="Total Customers" value={String(s.totalCustomers)} icon={<Users size={15} />} />
           <StatsCard label="Completed Jobs" value={String(s.completedJobs)} icon={<Calendar size={15} />} />
@@ -33,7 +33,7 @@ export default function ReportsPage() {
           <RevenueChart data={s.revenueByMonth} />
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+        <div className="grid-auto">
           {[
             { label: "Average Invoice Value", value: formatCurrency(avgInvoice) },
             { label: "This Month Revenue", value: formatCurrency(s.monthlyRevenue) },

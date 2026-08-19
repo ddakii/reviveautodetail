@@ -37,7 +37,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 export default function FAQPage() {
   return (
     <div style={{ background: "#F7F7F5", paddingTop: 64, minHeight: "100vh" }}>
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "80px 48px" }}>
+      <div className="wrap section-y-sm" style={{ maxWidth: 760 }}>
         <div style={{ marginBottom: 56 }}>
           <div style={{ fontSize: 11, fontWeight: 600, color: "var(--c-gold)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>FAQ</div>
           <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 700, color: "var(--c-ink)", letterSpacing: "-0.025em" }}>Common questions</h1>
@@ -48,7 +48,7 @@ export default function FAQPage() {
           {FAQS.map((faq, i) => <FAQItem key={i} question={faq.q} answer={faq.a} />)}
         </div>
 
-        <div style={{ background: "var(--c-ink)", borderRadius: 16, padding: "40px 40px", textAlign: "center" }}>
+        <div style={{ background: "var(--c-ink)", borderRadius: 16, padding: "32px 24px", textAlign: "center" }}>
           <h2 style={{ fontSize: 20, fontWeight: 700, color: "#fff", marginBottom: 8 }}>Still have questions?</h2>
           <p style={{ fontSize: 14, color: "rgba(255,255,255,0.4)", marginBottom: 24 }}>We're happy to help. Get in touch with our team.</p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>

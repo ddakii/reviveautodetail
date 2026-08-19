@@ -18,7 +18,7 @@ export function PageHeader({ title, description, action, breadcrumb }: PageHeade
       justifyContent: "space-between",
       gap: 16,
       flexWrap: "wrap",
-    }}>
+    }} className="page-header-bar">
       <div>
         {breadcrumb && breadcrumb.length > 0 && (
           <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>

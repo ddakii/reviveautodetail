@@ -98,7 +98,7 @@ export default function CustomerDetailPage() {
         {tab === "overview" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             {/* Stats */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
+            <div className="grid-auto">
               {[
                 { label: "Total Spent",  value: formatCurrency(totalSpent) },
                 { label: "Appointments", value: String((customer.appointments || []).length) },

@@ -118,11 +118,12 @@ export default function BookingPage() {
               {services.map((s: any) => (
                 <button key={s.id || s.name} type="button" onClick={() => setServiceId(s.id)} disabled={!s.id} style={{
                   display: "flex", alignItems: "center", justifyContent: "space-between",
-                  padding: "20px 20px",
+                  padding: "20px 16px",
                   background: serviceId === s.id ? "var(--c-ink)" : "var(--c-surface)",
                   border: `1px solid ${serviceId === s.id ? "var(--c-ink)" : "var(--c-border)"}`,
                   borderRadius: "var(--r-lg)", cursor: s.id ? "pointer" : "not-allowed", textAlign: "left",
                   opacity: s.id ? 1 : 0.6,
+                  gap: 12, flexWrap: "wrap",
                 }}>
                   <div>
                     <div style={{ fontSize: 15, fontWeight: 600, color: serviceId === s.id ? "#fff" : "var(--c-ink)" }}>{s.name}</div>
@@ -148,7 +149,7 @@ export default function BookingPage() {
           <div>
             <h1 style={{ fontSize: "clamp(24px, 4vw, 38px)", fontWeight: 700, color: "var(--c-ink)", letterSpacing: "-0.02em", marginBottom: 8 }}>Your vehicle</h1>
             <p style={{ fontSize: 15, color: "var(--c-text-3)", marginBottom: 36 }}>Tell us about the vehicle being serviced.</p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 32 }}>
+            <div className="form-2" style={{ marginBottom: 32 }}>
               {inp("Year", vehicle.year, v => setVehicle(p => ({ ...p, year: v })), "number", true, "2024")}
               {inp("Make", vehicle.make, v => setVehicle(p => ({ ...p, make: v })), "text", true, "BMW")}
               {inp("Model", vehicle.model, v => setVehicle(p => ({ ...p, model: v })), "text", true, "M4")}
@@ -168,7 +169,7 @@ export default function BookingPage() {
             <h1 style={{ fontSize: "clamp(24px, 4vw, 38px)", fontWeight: 700, color: "var(--c-ink)", letterSpacing: "-0.02em", marginBottom: 8 }}>Your information</h1>
             <p style={{ fontSize: 15, color: "var(--c-text-3)", marginBottom: 36 }}>We'll use this to confirm your appointment.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 24 }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+              <div className="form-2">
                 {inp("First Name", details.firstName, v => setDetails(p => ({ ...p, firstName: v })), "text", true)}
                 {inp("Last Name", details.lastName, v => setDetails(p => ({ ...p, lastName: v })), "text", true)}
               </div>
@@ -237,7 +238,7 @@ export default function BookingPage() {
                 ["Date", details.preferredDate],
                 ["Time", formatTime(details.preferredTime)],
               ].map(([label, value]) => (
-                <div key={label} style={{ display: "flex", justifyContent: "space-between", fontSize: 14 }}>
+                <div key={label} style={{ display: "flex", justifyContent: "space-between", fontSize: 14, gap: 12, flexWrap: "wrap" }}>
                   <span style={{ color: "var(--c-text-3)" }}>{label}</span>
                   <span style={{ fontWeight: 600, color: "var(--c-ink)" }}>{value}</span>
                 </div>

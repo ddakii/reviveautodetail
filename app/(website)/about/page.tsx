@@ -5,8 +5,8 @@ export default function AboutPage() {
   return (
     <div style={{ background: "#F7F7F5", paddingTop: 64 }}>
       {/* Hero */}
-      <section style={{ background: "#090909", padding: "80px 48px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+      <section className="hero-banner" style={{ background: "#090909" }}>
+        <div className="wrap" style={{ paddingLeft: 0, paddingRight: 0 }}>
           <div style={{ fontSize: 11, fontWeight: 600, color: "var(--c-gold)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 16 }}>About Us</div>
           <h1 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 800, color: "#fff", letterSpacing: "-0.03em", lineHeight: 1.05, maxWidth: 600 }}>
             Built on passion.<br />Defined by precision.
@@ -16,7 +16,7 @@ export default function AboutPage() {
 
       {/* Story */}
       <section style={{ background: "#fff" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "80px 48px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
+        <div className="wrap grid-2-wide section-y-sm">
           <div>
             <div style={{ fontSize: 11, fontWeight: 600, color: "var(--c-gold)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 16 }}>Our Story</div>
             <h2 style={{ fontSize: "clamp(22px, 3vw, 34px)", fontWeight: 700, color: "var(--c-ink)", letterSpacing: "-0.02em", lineHeight: 1.2, marginBottom: 20 }}>Started by a car enthusiast, built for car enthusiasts.</h2>
@@ -33,12 +33,12 @@ export default function AboutPage() {
 
       {/* Values */}
       <section style={{ background: "var(--c-ink)" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "80px 48px" }}>
+        <div className="wrap section-y-sm">
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <div style={{ fontSize: 11, fontWeight: 600, color: "var(--c-gold)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>Our Values</div>
             <h2 style={{ fontSize: "clamp(22px, 3vw, 36px)", fontWeight: 700, color: "#fff", letterSpacing: "-0.02em" }}>What we stand for</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1, background: "rgba(255,255,255,0.06)" }}>
+          <div className="grid-4" style={{ gap: 1, background: "rgba(255,255,255,0.06)" }}>
             {[
               { num: "01", title: "Precision", desc: "Every detail matters. We take the time to do things right, not fast." },
               { num: "02", title: "Integrity", desc: "We're honest about what your vehicle needs and what it doesn't." },
@@ -57,7 +57,7 @@ export default function AboutPage() {
 
       {/* CTA */}
       <section style={{ background: "#F7F7F5" }}>
-        <div style={{ maxWidth: 600, margin: "0 auto", padding: "96px 48px", textAlign: "center" }}>
+        <div className="wrap section-y" style={{ maxWidth: 600, textAlign: "center" }}>
           <h2 style={{ fontSize: "clamp(22px, 3vw, 36px)", fontWeight: 700, color: "var(--c-ink)", letterSpacing: "-0.02em", marginBottom: 16 }}>Ready to experience the Revive difference?</h2>
           <p style={{ fontSize: 15, color: "var(--c-text-3)", marginBottom: 32 }}>Book your appointment and see why clients keep coming back.</p>
           <Link href="/booking" style={{ height: 48, padding: "0 28px", background: "var(--c-gold)", color: "#fff", borderRadius: 10, fontWeight: 700, fontSize: 14, display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>

@@ -13,13 +13,13 @@ export default function ContactPage() {
 
   return (
     <div style={{ background: "#F7F7F5", paddingTop: 64, minHeight: "100vh" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "80px 48px" }}>
+      <div className="wrap section-y-sm">
         <div style={{ marginBottom: 56 }}>
           <div style={{ fontSize: 11, fontWeight: 600, color: "var(--c-gold)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>Contact</div>
           <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 700, color: "var(--c-ink)", letterSpacing: "-0.025em" }}>Get in touch</h1>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: 64, alignItems: "flex-start" }}>
+        <div className="grid-2-contact">
           {/* Info */}
           <div>
             <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
@@ -38,7 +38,7 @@ export default function ContactPage() {
           </div>
 
           {/* Form */}
-          <div style={{ background: "#fff", border: "1px solid var(--c-border)", borderRadius: "var(--r-xl)", padding: 40 }}>
+          <div className="contact-card">
             {sent ? (
               <div style={{ textAlign: "center", padding: "32px 0" }}>
                 <div style={{ width: 56, height: 56, borderRadius: "50%", background: "var(--c-green-bg)", border: "1px solid rgba(22,163,74,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>

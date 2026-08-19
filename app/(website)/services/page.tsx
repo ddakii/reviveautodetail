@@ -15,8 +15,8 @@ export default function ServicesPage() {
   return (
     <div style={{ background: "#F7F7F5", paddingTop: 64 }}>
       {/* Header */}
-      <section style={{ background: "#090909", padding: "80px 48px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+      <section className="hero-banner" style={{ background: "#090909" }}>
+        <div className="wrap" style={{ paddingLeft: 0, paddingRight: 0 }}>
           <div style={{ fontSize: 11, fontWeight: 600, color: "var(--c-gold)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 16 }}>Our Services</div>
           <h1 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 800, color: "#fff", letterSpacing: "-0.03em", lineHeight: 1.05, maxWidth: 600 }}>
             Every service.<br />Executed perfectly.
@@ -28,26 +28,23 @@ export default function ServicesPage() {
       </section>
 
       {/* Services */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "72px 48px", display: "flex", flexDirection: "column", gap: 0 }}>
+      <div className="wrap section-y-sm" style={{ display: "flex", flexDirection: "column", gap: 0 }}>
         {SERVICES.map((svc, i) => (
-          <div key={svc.slug} style={{
-            display: "grid",
-            gridTemplateColumns: i % 2 === 0 ? "1fr 1fr" : "1fr 1fr",
-            gap: 0,
+          <div key={svc.slug} className="svc-block" style={{
             borderBottom: "1px solid var(--c-border)",
             background: i % 2 === 0 ? "#fff" : "#F7F7F5",
           }}>
             {i % 2 !== 0 && (
-              <div style={{ overflow: "hidden" }}>
+              <div className="svc-media" style={{ overflow: "hidden" }}>
                 <img src={svc.img} alt={svc.name} style={{ width: "100%", height: "100%", minHeight: 280, objectFit: "cover" }} />
               </div>
             )}
-            <div style={{ padding: "56px 48px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div className="svc-copy">
               <div style={{ fontSize: 11, fontWeight: 700, color: "var(--c-gold)", letterSpacing: "0.12em", marginBottom: 12 }}>{svc.num}</div>
               <h2 style={{ fontSize: "clamp(20px, 2.5vw, 30px)", fontWeight: 700, color: "var(--c-ink)", letterSpacing: "-0.02em", marginBottom: 8 }}>{svc.name}</h2>
               <div style={{ fontSize: 12, color: "var(--c-text-3)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 16 }}>{svc.tag}</div>
               <p style={{ fontSize: 15, color: "var(--c-text-2)", lineHeight: 1.7, marginBottom: 28 }}>{svc.desc}</p>
-              <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap" }}>
                 <div>
                   <div style={{ fontSize: 22, fontWeight: 700, color: "var(--c-ink)" }}>From ${svc.price}</div>
                   <div style={{ fontSize: 12, color: "var(--c-text-3)", marginTop: 2 }}>Approx. {svc.duration}</div>
@@ -58,7 +55,7 @@ export default function ServicesPage() {
               </div>
             </div>
             {i % 2 === 0 && (
-              <div style={{ overflow: "hidden" }}>
+              <div className="svc-media" style={{ overflow: "hidden" }}>
                 <img src={svc.img} alt={svc.name} style={{ width: "100%", height: "100%", minHeight: 280, objectFit: "cover" }} />
               </div>
             )}

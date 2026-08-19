@@ -22,19 +22,27 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
   return (
     <>
-      <header style={{
+      <header className="site-header" style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
         height: 64,
-        background: scrolled ? "rgba(9,9,9,0.94)" : "transparent",
-        backdropFilter: scrolled ? "blur(16px)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.07)" : "none",
+        background: scrolled || menuOpen ? "rgba(9,9,9,0.94)" : "transparent",
+        backdropFilter: scrolled || menuOpen ? "blur(16px)" : "none",
+        borderBottom: scrolled || menuOpen ? "1px solid rgba(255,255,255,0.07)" : "none",
         transition: "background 0.3s ease, border-color 0.3s ease",
       }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", height: "100%", padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          {/* Logo */}
-          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
+        <div className="nav-inner">
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", flexShrink: 0 }}>
             <div style={{ width: 28, height: 28, borderRadius: 7, background: "var(--c-gold)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 12, color: "#fff", letterSpacing: "-0.01em" }}>R</div>
             <div>
               <div style={{ fontSize: 12, fontWeight: 700, color: "#fff", letterSpacing: "0.1em" }}>REVIVE</div>
@@ -42,25 +50,24 @@ export function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop nav */}
-          <nav style={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <nav className="nav-desktop">
             {LINKS.map(({ href, label }) => (
               <Link key={href} href={href} className={`nav-link${pathname === href ? " nav-link-active" : ""}`}>{label}</Link>
             ))}
           </nav>
 
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <Link href="/booking" className="cta-gold" style={{
-              height: 36, padding: "0 18px",
-              borderRadius: 8,
-              fontWeight: 600, fontSize: 13,
-              display: "inline-flex", alignItems: "center",
-            }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+            <Link href="/booking" className="cta-gold nav-cta">
               Book a Detail
             </Link>
 
-            {/* Hamburger */}
-            <button onClick={() => setMenuOpen(!menuOpen)} style={{ display: "none", width: 36, height: 36, background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 8, cursor: "pointer", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4 }} className="nav-hamburger">
+            <button
+              type="button"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="nav-hamburger"
+            >
               <span style={{ width: 16, height: 1.5, background: "#fff", display: "block", transition: "transform 0.2s", transform: menuOpen ? "rotate(45deg) translate(2px, 4px)" : "none" }} />
               <span style={{ width: 16, height: 1.5, background: "#fff", display: "block", opacity: menuOpen ? 0 : 1, transition: "opacity 0.2s" }} />
               <span style={{ width: 16, height: 1.5, background: "#fff", display: "block", transition: "transform 0.2s", transform: menuOpen ? "rotate(-45deg) translate(2px, -4px)" : "none" }} />
@@ -69,11 +76,10 @@ export function Navbar() {
         </div>
       </header>
 
-      {/* Mobile drawer */}
       {menuOpen && (
-        <div style={{ position: "fixed", inset: 0, zIndex: 99, background: "rgba(9,9,9,0.98)", paddingTop: 80, padding: "80px 32px 32px", display: "flex", flexDirection: "column", gap: 4 }}>
+        <div style={{ position: "fixed", inset: 0, zIndex: 99, background: "rgba(9,9,9,0.98)", paddingTop: 80, padding: "80px 24px 32px", display: "flex", flexDirection: "column", gap: 4, overflowY: "auto" }}>
           {LINKS.map(({ href, label }) => (
-            <Link key={href} href={href} onClick={() => setMenuOpen(false)} style={{ fontSize: 28, fontWeight: 600, color: "#fff", textDecoration: "none", padding: "10px 0", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+            <Link key={href} href={href} onClick={() => setMenuOpen(false)} style={{ fontSize: "clamp(22px, 7vw, 28px)", fontWeight: 600, color: "#fff", textDecoration: "none", padding: "12px 0", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
               {label}
             </Link>
           ))}
@@ -82,13 +88,6 @@ export function Navbar() {
           </Link>
         </div>
       )}
-
-      <style>{`
-        @media (max-width: 768px) {
-          .nav-hamburger { display: flex !important; }
-          nav { display: none !important; }
-        }
-      `}</style>
     </>
   );
 }
