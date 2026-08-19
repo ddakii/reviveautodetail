@@ -116,8 +116,9 @@ export function Sidebar({ collapsed = false }: SidebarProps) {
                 color: "rgba(255,255,255,0.2)",
               }}>{section}</div>
             )}
-            {items.map(({ label, href, icon: Icon, exact }) => {
-              const active = isActive(href, exact);
+            {items.map((item) => {
+              const { label, href, icon: Icon } = item;
+              const active = isActive(href, "exact" in item ? item.exact : undefined);
               return (
                 <Link key={href} href={href} className={`sidebar-link${active ? " sidebar-link-active" : ""}`}>
                   {active && (

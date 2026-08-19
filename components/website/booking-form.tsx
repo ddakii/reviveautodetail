@@ -182,7 +182,7 @@ export function BookingForm({ services }: { services?: any[] }) {
         </div>
       </div>
 
-      <Button type="submit" variant="default" size="lg" loading={loading} className="w-full">
+      <Button type="submit" variant="gold" size="lg" loading={loading} className="w-full">
         Submit Booking Request
         <ArrowRight className="h-4 w-4" />
       </Button>
