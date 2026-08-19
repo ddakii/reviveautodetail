@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Clock } from "lucide-react";
 import { formatCurrency, getDurationLabel } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 const SERVICE_IMAGES: Record<string, string> = {
   "maintenance-detail": "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=1200&q=80",
   "exterior-detail": "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=1200&q=80",

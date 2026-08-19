@@ -6,6 +6,8 @@ import { RevenueChart } from "@/components/dashboard/revenue-chart";
 import { DollarSign, Users, Calendar, AlertCircle, Clock } from "lucide-react";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 async function getStats() {
   try {
     const now = new Date();
