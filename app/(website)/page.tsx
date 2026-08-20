@@ -58,7 +58,7 @@ export default function HomePage() {
           <div style={{ width: 1, height: 24, background: "var(--c-gold)", opacity: 0.5 }} />
           <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.4)", letterSpacing: "0.15em", textTransform: "uppercase" }}>Premium Automotive Detailing</span>
         </div>
-        <div className="wrap" style={{ position: "relative", paddingTop: 0, paddingBottom: 88, width: "100%" }}>
+        <div className="wrap hero-copy" style={{ position: "relative", paddingTop: 0, paddingBottom: 88, width: "100%" }}>
           <div style={{ maxWidth: 700 }}>
             <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.25)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 20 }}>— 01</div>
             <h1 style={{ fontSize: "clamp(44px, 6.5vw, 76px)", fontWeight: 800, color: "#fff", lineHeight: 1.05, letterSpacing: "-0.03em", marginBottom: 24 }}>
