@@ -51,7 +51,7 @@ export default function HomePage() {
     <div style={{ background: "#F7F7F5" }}>
 
       {/* ── 01 HERO ──────────────────────────────────────── */}
-      <section className="hero-full" style={{ position: "relative", minHeight: "100vh", background: "#090909", display: "flex", flexDirection: "column", justifyContent: "flex-end", overflow: "hidden" }}>
+      <section className="hero-full" style={{ position: "relative", background: "#090909", display: "flex", flexDirection: "column", justifyContent: "flex-end", overflow: "hidden" }}>
         <img src="https://images.unsplash.com/photo-1607860108855-64acf2078ed9?w=1920&q=85" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.45 }} />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(9,9,9,0.05) 0%, rgba(9,9,9,0.25) 40%, rgba(9,9,9,0.92) 100%)" }} />
         <div className="hero-kicker" style={{ position: "absolute", top: 96, left: 48, display: "flex", alignItems: "center", gap: 12, maxWidth: "calc(100% - 40px)" }}>

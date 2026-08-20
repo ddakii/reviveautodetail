@@ -352,6 +352,17 @@ img { max-width: 100%; }
   .grid-2-wide { gap: 40px; }
   .hero-stats { grid-template-columns: 1fr 1fr; gap: 20px 16px; }
   .hero-stat { border-right: none; padding-right: 0; }
+  .site-header {
+    background: rgba(9, 9, 9, 0.96) !important;
+    backdrop-filter: blur(16px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+  .hero-full {
+    margin-top: calc(64px + env(safe-area-inset-top));
+    min-height: calc(100svh - 64px - env(safe-area-inset-top));
+    min-height: calc(100dvh - 64px - env(safe-area-inset-top));
+  }
+  .hero-kicker { left: 24px !important; top: 24px !important; }
 }
 
 @media (max-width: 768px) {
@@ -376,7 +387,7 @@ img { max-width: 100%; }
   .page-header-bar { padding: 20px 16px 16px !important; }
   .contact-card { padding: 24px 20px; }
   .topbar-name { display: none; }
-  .hero-kicker { left: 20px !important; top: 80px !important; }
+  .hero-kicker { left: 20px !important; top: 20px !important; }
 
   input, select, textarea { font-size: 16px !important; }
 
